@@ -32,7 +32,7 @@ export default function Checkout() {
     let Subtotal = 0;
     if (selectedProducts?.length) {
         for (let id of selectedProducts){
-            const price = productsInfo.find(p => p._id === id).price;
+            const price = productsInfo.find(p => p._id === id)?.price || 0;
             Subtotal += price;
         }
     }
@@ -43,8 +43,11 @@ export default function Checkout() {
             {!productsInfo.length && (
                 <div>no products in your shopping cart</div>
             )}
-            {productsInfo.length && productsInfo.map(productInfo => (
-                <div className="flex mb-5">
+            {productsInfo.length && productsInfo.map(productInfo => {
+                const amount = selectedProducts.filter(id => id === productInfo._id).length;
+                if (amount === 0) return;
+                return (
+                <div className="flex mb-5" key={productInfo}>
                     <div className="bg-gray-100 p-3 rounded-xl shrink-0">
                         <img className="w-24" src={productInfo.picture} alt=""></img>
                     </div>
@@ -66,28 +69,32 @@ export default function Checkout() {
                     </div>
                 </div>
                 
-            ))}
-            <div className="mt-4">
-                <input onChange={e => setAddress(e.target.value)} value={address} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Street address, number"/>
-                <input onChange={e => setCity(e.target.value)} value={city} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="City and postal code"/>
-                <input onChange={e => setName(e.target.value)} value={name} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Your name"/>
-                <input onChange={e => setEmail(e.target.value)} value={email} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="email" placeholder="Email Address"/>
-            </div>
-            <div className="mt-4">
-                <div className="flex my-3">
-                    <h3 className="grow font-bold text-gray-400">Subtotal:</h3>
-                    <h3 className="font-bold">${Subtotal}</h3>
+            )})}
+            <form action="/api/checkout" method="POST">
+                <div className="mt-4">
+                    <input name="address" onChange={e => setAddress(e.target.value)} value={address} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Street address, number"/>
+                    <input name="city" onChange={e => setCity(e.target.value)} value={city} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="City and postal code"/>
+                    <input name="name" onChange={e => setName(e.target.value)} value={name} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Your name"/>
+                    <input name="email" onChange={e => setEmail(e.target.value)} value={email} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="email" placeholder="Email Address"/>
                 </div>
-                <div className="flex my-3">
-                    <h3 className="grow font-bold text-gray-400">Delivery:</h3>
-                    <h3 className="font-bold">${deliveryPrice}</h3>
+                <div className="mt-4">
+                    <div className="flex my-3">
+                        <h3 className="grow font-bold text-gray-400">Subtotal:</h3>
+                        <h3 className="font-bold">${Subtotal}</h3>
+                    </div>
+                    <div className="flex my-3">
+                        <h3 className="grow font-bold text-gray-400">Delivery:</h3>
+                        <h3 className="font-bold">${deliveryPrice}</h3>
+                    </div>
+                    <div className="flex my-3 border-t-2 pt-3 border-emerald-400">
+                        <h3 className="grow font-bold text-gray-400">Total:</h3>
+                        <h3 className="font-bold">${total}</h3>
+                    </div>
                 </div>
-                <div className="flex my-3 border-t-2 pt-3 border-emerald-400">
-                    <h3 className="grow font-bold text-gray-400">Total:</h3>
-                    <h3 className="font-bold">${total}</h3>
-                </div>
-            </div>
-            <button className="bg-emerald-500 py-2 px-5 rounded-xl font-bold text-white w-full my-4 shadow-emerald-300 shadow-lg">Pay ${total}</button>
+            
+                <input type="hidden" name="products" value={selectedProducts.join(',')}></input>
+                <button type="submit" className="bg-emerald-500 py-2 px-5 rounded-xl font-bold text-white w-full my-4 shadow-emerald-300 shadow-lg">Pay ${total}</button>
+            </form>
         </Layout>
     );
 }
