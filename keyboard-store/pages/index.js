@@ -20,7 +20,8 @@ export default function Home({products}) {
 
   console.log(categoriesNames)
   return (
-    <Layout>
+    <div className="flex flex-row min-h-screen justify-center items-center">
+    <Layout >
       <input value={phrase} onChange={e => setPhrase(e.target.value)} type="text" placeholder="Search for products..." className="bg-gray-100 1-full py-2 px-4 rounded-xl"></input>
       <div>
         {categoriesNames.map(categoryName => (
@@ -45,6 +46,7 @@ export default function Home({products}) {
       
 
     </Layout>
+    </div>
   )
 }
 
