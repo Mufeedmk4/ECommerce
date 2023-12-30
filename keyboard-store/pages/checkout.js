@@ -48,22 +48,22 @@ export default function Checkout() {
                 if (amount === 0) return;
                 return (
                 <div className="flex mb-5" key={productInfo}>
-                    <div className="bg-gray-100 p-3 rounded-xl shrink-0">
+                    <div className="bg-slate-200 p-3 rounded-xl shrink-0">
                         <img className="w-24" src={productInfo.picture} alt=""></img>
                     </div>
                     <div className="pl-4">
                         <h3 className="font-bold text-lg">{productInfo.name}</h3>
-                        <p className="text-sm leading-4 text-gray-500">{productInfo.description}</p>
+                        <p className="text-sm leading-4 text-slate-200">{productInfo.description}</p>
                         <div className="flex">
                             <div className="grow">
                                 ${productInfo.price}
                             </div>
                             <div>
-                                <button onClick={() => lessOfThisProduct(productInfo._id)} className="border border-emerald-500 rounded-lg px-2 ">-</button>
+                                <button onClick={() => lessOfThisProduct(productInfo._id)} className="border border-violet-500 rounded-lg px-2 ">-</button>
                                 <span className="px-2">
                                     {selectedProducts.filter(id => id === productInfo._id).length}
                                 </span>
-                                <button onClick={() => moreOfThisProduct(productInfo._id)} className="bg-emerald-500 rounded-lg px-2 text-white ">+</button>
+                                <button onClick={() => moreOfThisProduct(productInfo._id)} className="bg-violet-500 rounded-lg px-2 text-white ">+</button>
                             </div>
                         </div>
                     </div>
@@ -72,28 +72,28 @@ export default function Checkout() {
             )})}
             <form action="/api/checkout" method="POST">
                 <div className="mt-4">
-                    <input name="address" onChange={e => setAddress(e.target.value)} value={address} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Street address, number"/>
-                    <input name="city" onChange={e => setCity(e.target.value)} value={city} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="City and postal code"/>
-                    <input name="name" onChange={e => setName(e.target.value)} value={name} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Your name"/>
-                    <input name="email" onChange={e => setEmail(e.target.value)} value={email} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"type="email" placeholder="Email Address"/>
+                    <input name="address" onChange={e => setAddress(e.target.value)} value={address} className="bg-slate-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Street address, number"/>
+                    <input name="city" onChange={e => setCity(e.target.value)} value={city} className="bg-slate-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="City and postal code"/>
+                    <input name="name" onChange={e => setName(e.target.value)} value={name} className="bg-slate-100 w-full rounded-lg px-4 py-2 mb-2"type="text" placeholder="Your name"/>
+                    <input name="email" onChange={e => setEmail(e.target.value)} value={email} className="bg-slate-100 w-full rounded-lg px-4 py-2 mb-2"type="email" placeholder="Email Address"/>
                 </div>
                 <div className="mt-4">
                     <div className="flex my-3">
-                        <h3 className="grow font-bold text-gray-400">Subtotal:</h3>
+                        <h3 className="grow font-bold text-slate-400">Subtotal:</h3>
                         <h3 className="font-bold">${Subtotal}</h3>
                     </div>
                     <div className="flex my-3">
-                        <h3 className="grow font-bold text-gray-400">Delivery:</h3>
+                        <h3 className="grow font-bold text-slate-400">Delivery:</h3>
                         <h3 className="font-bold">${deliveryPrice}</h3>
                     </div>
-                    <div className="flex my-3 border-t-2 pt-3 border-emerald-400">
-                        <h3 className="grow font-bold text-gray-400">Total:</h3>
+                    <div className="flex my-3 border-t-2 pt-3 border-violet-500">
+                        <h3 className="grow font-bold text-slate-400">Total:</h3>
                         <h3 className="font-bold">${total}</h3>
                     </div>
                 </div>
             
                 <input type="hidden" name="products" value={selectedProducts.join(',')}></input>
-                <button type="submit" className="bg-emerald-500 py-2 px-5 rounded-xl font-bold text-white w-full my-4 shadow-emerald-300 shadow-lg">Pay ${total}</button>
+                <button type="submit" className="bg-violet-500 py-2 px-5 rounded-xl font-bold text-white w-full my-4 shadow-md shadow-lg">Pay ${total}</button>
             </form>
         </Layout>
     );
